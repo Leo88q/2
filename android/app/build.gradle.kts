@@ -25,6 +25,7 @@ android {
     signingConfigs {
         create("release") {
             if (keystorePath != null) {
+                storeType = System.getenv("PIEGEDDON_KEYSTORE_TYPE") ?: "pkcs12"
                 storeFile = file(keystorePath)
                 storePassword = keystorePassword
                 this.keyAlias = keyAlias
@@ -61,6 +62,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    // Solana Mobile Wallet Adapter (Apache 2.0). Версию сверить при первом CI-прогоне.
-    implementation("com.solana:mobile-wallet-adapter-clientlib:2.1.0")
+    // Solana Mobile Wallet Adapter (Apache 2.0). API сверен с исходниками v2.2.0.
+    implementation("com.solana:mobile-wallet-adapter-clientlib-ktx:2.2.0")
 }

@@ -1,16 +1,26 @@
 // Copyright 2026 Piegeddon Contributors. Licensed under the Apache License, Version 2.0.
 //
-// Минт cNFT-наград (Metaplex Bubblegum).
-// Режимы:
-//   mock    — детерминированная заглушка (по умолчанию; для dev/CI/тестов);
-//   solana  — реальный минт через @metaplex-foundation/umi + mpl-bubblegum.
+// Минт cNFT-наград (Metaplex Bubblegum, сжатые NFT).
 //
-// Продакшн-включение solana-режима (см. docs/DEPLOY.md):
-//   npm i @metaplex-foundation/umi @metaplex-foundation/umi-bundle-defaults \
-//        @metaplex-foundation/mpl-bubblegum
-//   PIEGEDDON_MINT_MODE=solana SOLANA_RPC_URL=... BUBBLEGUM_TREE=... NFT_COLLECTION=...
+// Режимы:
+//   mock    — детерминированная заглушка (dev/CI/тесты);
+//   solana  — реальный минт через @metaplex-foundation/umi + mpl-bubblegum.
+//             Создание дерева и коллекции: backend/scripts/create_tree.mjs
+//
+// Экономика: комиссию платит проект (payer), игрок — никогда.
 import { createHash } from 'node:crypto';
+import { promises as fs } from 'node:fs';
+import { createUmi } from '@metaplex-foundation/umi-bundle-defaults';
+import {
+  base58,
+  createSignerFromKeypair,
+  keypairIdentity,
+  publicKey,
+  type Umi,
+} from '@metaplex-foundation/umi';
+import { mintToCollectionV1, TokenProgramVersion } from '@metaplex-foundation/mpl-bubblegum';
 import type { Reward } from './store.js';
+import type { Config } from './config.js';
 
 export interface MintResult {
   ok: boolean;
@@ -25,11 +35,32 @@ export interface MintConfig {
   treeAddress: string;
   collectionAddress: string;
   payerKeyPath: string;
+  metadataBaseUrl: string;
 }
 
 function mockSignature(reward: Reward, wallet: string): string {
   const h = createHash('sha256').update(`${reward.id}:${wallet}:${reward.collection}`).digest('hex');
   return `mocktx_${h.slice(0, 32)}`;
+}
+
+export function mintConfigFrom(cfg: Config): MintConfig {
+  return {
+    mintMode: cfg.mintMode,
+    rpcUrl: cfg.rpcUrl,
+    treeAddress: cfg.treeAddress,
+    collectionAddress: cfg.collectionAddress,
+    payerKeyPath: cfg.payerKeyPath,
+    metadataBaseUrl: cfg.metadataBaseUrl,
+  };
+}
+
+/** Загружает payer-keypair (формат Solana CLI: JSON-массив байт). */
+async function loadUmi(cfg: MintConfig): Promise<Umi> {
+  const umi = createUmi(cfg.rpcUrl);
+  const secret = JSON.parse(await fs.readFile(cfg.payerKeyPath, 'utf8')) as number[];
+  const keypair = umi.eddsa.createKeypairFromSecretKey(Uint8Array.from(secret));
+  umi.use(keypairIdentity(createSignerFromKeypair(umi, keypair)));
+  return umi;
 }
 
 export async function mintReward(reward: Reward, wallet: string, cfg: MintConfig): Promise<MintResult> {
@@ -41,37 +72,37 @@ export async function mintReward(reward: Reward, wallet: string, cfg: MintConfig
     return { ok: true, signature: mockSignature(reward, wallet), mode: 'mock' };
   }
 
-  // --- solana ---------------------------------------------------------------
+  // --- solana (Bubblegum, сжатый NFT) -------------------------------------
   try {
-    // Опциональные зависимости (см. docs/DEPLOY.md): импорт по строке,
-    // чтобы сборка и тесты не требовали их установки.
-    const load = (name: string) => import(/* @vite-ignore */ name) as Promise<any>;
-    const umiPkg = await load('@metaplex-foundation/umi-bundle-defaults');
-    const bubblegum = await load('@metaplex-foundation/mpl-bubblegum');
-    const umiLib = await load('@metaplex-foundation/umi');
-
-    const umi = umiPkg.createUmi(cfg.rpcUrl);
-    if (!cfg.treeAddress || !cfg.collectionAddress) {
-      return { ok: false, signature: '', mode: 'solana', error: 'missing_tree_or_collection' };
+    if (!cfg.treeAddress || !cfg.collectionAddress || !cfg.payerKeyPath) {
+      return {
+        ok: false,
+        signature: '',
+        mode: 'solana',
+        error: 'missing_config: BUBBLEGUM_TREE / NFT_COLLECTION / PAYER_KEYPAIR_PATH (см. backend/scripts/create_tree.mjs)',
+      };
     }
 
+    const umi = await loadUmi(cfg);
     const metadata = {
       name: `Piegeddon · ${reward.title}`,
       symbol: 'PIEGEDDON',
-      uri: '', // off-chain JSON; заполняется при настройке metadata-хостинга
+      uri: `${cfg.metadataBaseUrl}/api/metadata/${reward.id}`,
       sellerFeeBasisPoints: 0,
-      collection: { key: umiLib.publicKey(cfg.collectionAddress), verified: false },
-      creators: null,
+      collection: { key: publicKey(cfg.collectionAddress), verified: false },
+      creators: [{ address: umi.identity.publicKey, verified: false, share: 100 }],
+      tokenProgramVersion: TokenProgramVersion.Original,
     };
 
-    const { signature } = await bubblegum.mintToCollectionV1(umi, {
-      leafOwner: umiLib.publicKey(wallet),
-      merkleTree: umiLib.publicKey(cfg.treeAddress),
-      collectionMetadata: umiLib.findMetadataPda(umi, { mint: umiLib.publicKey(cfg.collectionAddress) }),
+    const tx = mintToCollectionV1(umi, {
+      leafOwner: publicKey(wallet),
+      merkleTree: publicKey(cfg.treeAddress),
+      collectionMint: publicKey(cfg.collectionAddress),
       metadata,
-    }).sendAndConfirm(umi);
+    });
 
-    return { ok: true, signature: String(signature), mode: 'solana' };
+    const { signature } = await tx.sendAndConfirm(umi);
+    return { ok: true, signature: base58.deserialize(signature)[0], mode: 'solana' };
   } catch (err) {
     return {
       ok: false,

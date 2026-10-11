@@ -81,16 +81,33 @@ publisher keypair, `DAPP_STORE_API_KEY`).
 
 ## 4. Включение реального минта cNFT
 
-1. 🧑‍💻 Создать Merkle-дерево и коллекцию (Metaplex Bubblegum):
+Код интеграции готов (Umi + mpl-bubblegum, проверен типами). Шаги:
+
+1. 🧑‍💻 Создать payer-ключ (если нет): `solana-keygen new -o piegeddon-payer.json`
+   и положить на него SOL (дерево ~$5-10, дальше — доли цента за минт).
+2. Создать Merkle-дерево и коллекцию **одной командой**:
    ```bash
-   npm i @metaplex-foundation/umi @metaplex-foundation/umi-bundle-defaults \
-        @metaplex-foundation/mpl-bubblegum
+   cd backend
+   PAYER_KEYPAIR_PATH=./piegeddon-payer.json \
+   SOLANA_RPC_URL=https://api.mainnet-beta.solana.com \
+   METADATA_BASE_URL=https://api.piegeddon.game \
+   node scripts/create_tree.mjs            # --depth 14 --buffer 64 --canopy 10
    ```
-   Скрипт создания дерева (~$5-10 разово): см. Metaplex docs `createTree`.
-2. Заполнить `BUBBLEGUM_TREE`, `NFT_COLLECTION`, `PAYER_KEYPAIR_PATH`,
-   `PIEGEDDON_MINT_MODE=solana`, `SOLANA_RPC_URL` (Helius/Triton — публичный
-   RPC не потянет минт-нагрузку).
-3. Проверить на devnet: `SOLANA_RPC_URL=https://api.devnet.solana.com` + devnet-дерево.
+   Скрипт печатает готовые `BUBBLEGUM_TREE` и `NFT_COLLECTION`.
+3. Заполнить `backend/.env`:
+   ```
+   PIEGEDDON_MINT_MODE=solana
+   SOLANA_RPC_URL=https://<ваш RPC: Helius/Triton>   # публичный RPC не потянет нагрузку
+   BUBBLEGUM_TREE=...
+   NFT_COLLECTION=...
+   PAYER_KEYPAIR_PATH=...
+   METADATA_BASE_URL=https://api.piegeddon.game
+   ```
+4. Репетиция на devnet: `SOLANA_RPC_URL=https://api.devnet.solana.com`
+   + devnet-версия `create_tree.mjs` (отдельный payer).
+
+Метаданные cNFT раздаёт сам backend: `GET /api/metadata/:rewardId`
+(URI подставляется в `uri` при минте) и `GET /api/metadata/collection`.
 
 Правило экономики: **комиссию за минт платит проект**, игрок никогда не платит.
 
@@ -120,16 +137,21 @@ publisher keypair, `DAPP_STORE_API_KEY`).
 
 | Что | Где | Почему |
 |---|---|---|
-| Сигнатуры `com.solana:mobile-wallet-adapter-clientlib:2.1.0` | `android/.../WalletManager.kt` | API клиентской библиотеки уточняется по актуальной версии (один файл) |
-| Gradle wrapper jar не в git | CI использует `gradle/actions/setup-gradle` | политика репозитория: бинарные jar не коммитим |
-| Отсутствие Privacy Policy страницы | `https://piegeddon.game/privacy` | 🧑‍💻 задача релиз-менеджера (нужен домен) |
+| ~~Сигнатуры MWA~~ | ✅ сверены с исходниками `clientlib-ktx v2.2.0` | готово |
+| ~~Gradle wrapper~~ | ✅ `android/gradlew` + wrapper jar в git | готово |
+| ~~Privacy/ToS~~ | ✅ страницы `/privacy.html`, `/terms.html` | готово; нужен деплой на домен |
+| Версия `mobile-wallet-adapter-clientlib-ktx` | `android/app/build.gradle.kts` | если Maven Central отдаёт другую — поправить одну строку при первом CI-прогоне |
 | Postgres вместо JSON-файла | `backend/src/store.ts` | масштабирование после первых 1k игроков |
+| Развёртывание на домене | `deploy/docker-compose.yml` | 🧑‍💻 нужен VPS + DNS `piegeddon.game` + TLS |
 
 ---
 
 ## 7. Чеклист перед публичным запуском
 
-- [ ] `npm test` зелёный
+- [x] `npm test` зелёный (25 тестов)
+- [x] Keystore создан (`scripts/generate_keystore.sh`, PKCS#12)
+- [x] Privacy Policy и ToS как страницы (`/privacy.html`, `/terms.html`)
+- [x] Bubblegum-дерево и коллекция создаются одной командой (`backend/scripts/create_tree.mjs`)
 - [ ] APK подписан release-ключом, установлен на телефон и ТВ
 - [ ] Матч → победа → claim → cNFT приходит на кошелёк (devnet, потом mainnet)
 - [ ] Реферальная ссылка `/join/CODE` работает с телефона

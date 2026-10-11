@@ -131,6 +131,27 @@ test('комнаты: создание и проверка', async () => {
   assert.equal(res.status, 404);
 });
 
+test('метаданные cNFT: collection и reward', async () => {
+  let res = await fetch(`${base}/api/metadata/collection`);
+  assert.equal(res.status, 200);
+  const col = (await res.json()) as { name: string; symbol: string };
+  assert.equal(col.symbol, 'PIEGEDDON');
+
+  // Метаданные конкретной награды (id берём из списка наград игрока).
+  res = await fetch(`${base}/api/rewards/api_p1`);
+  const list = (await res.json()) as { rewards: Array<{ id: string; title: string }> };
+  const rid = list.rewards[0].id;
+  res = await fetch(`${base}/api/metadata/${rid}`);
+  assert.equal(res.status, 200);
+  const meta = (await res.json()) as { name: string; image: string; attributes: Array<{ trait_type: string }> };
+  assert.match(meta.name, /^Piegeddon · /);
+  assert.match(meta.image, /^https?:\/\//);
+  assert.ok(meta.attributes.some((a) => a.trait_type === 'Редкость'));
+
+  res = await fetch(`${base}/api/metadata/rw_does_not_exist`);
+  assert.equal(res.status, 404);
+});
+
 test('лидерборд', async () => {
   const res = await fetch(`${base}/api/leaderboard`);
   const body = (await res.json()) as { entries: Array<{ id: string }> };

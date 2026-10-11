@@ -179,3 +179,17 @@ Apache 2.0 разрешает коммерческое использовани�
 - **Лицензии**: `LICENSE`, `NOTICE`, ребрендинг форка, `docs/LICENSE-COMPLIANCE.md`.
 
 Продакт-ранбук: [DEPLOY.md](./DEPLOY.md).
+
+## 10. Полная Solana-интеграция (обновлено)
+
+- **Минт cNFT** (`backend/src/mint.ts`): реальный код Umi + `mpl-bubblegum`
+  (`mintToCollectionV1`), типы проверены компилятором; `mock`-режим для dev/CI.
+- **Метаданные**: `GET /api/metadata/:rewardId` и `/api/metadata/collection`
+  (стандарт Metaplex JSON) — URI подставляется в cNFT при минте.
+- **Создание дерева/коллекции**: `backend/scripts/create_tree.mjs`
+  (Bubblegum-дерево + Metaplex Certified Collection, печатает env-переменные).
+- **Mobile Wallet Adapter**: `WalletManager.kt` сверен с исходниками
+  `clientlib-ktx v2.2.0` (`ConnectionIdentity`, `Solana.Mainnet`, `transact(sender)`).
+- **Android**: gradle wrapper в репозитории, keystore PKCS#12 (keytool/openssl),
+  подпись release через переменные окружения.
+- **Юридические страницы**: `/privacy.html`, `/terms.html` (нужны для App NFT).

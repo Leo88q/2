@@ -1,0 +1,33 @@
+# Piegeddon — продакшн-развёртывание (backend + веб-игра).
+# Запуск из корня репозитория:
+#   docker compose -f deploy/docker-compose.yml up -d --build
+#
+# Перед запуском: cp backend/.env.example backend/.env (заполнить).
+# TLS-терминация (Caddy/nginx) ставится перед портом 8080.
+services:
+  piegeddon:
+    build:
+      context: ..
+      dockerfile: backend/Dockerfile
+    image: piegeddon:latest
+    container_name: piegeddon
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    env_file:
+      - ../backend/.env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 8080
+      WEB_ROOT: /web
+      PIEGEDDON_DATA: /data
+    volumes:
+      - piegeddon-data:/data
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:8080/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+volumes:
+  piegeddon-data:

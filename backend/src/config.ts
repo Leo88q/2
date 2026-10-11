@@ -7,6 +7,7 @@ export interface Config {
   treeAddress: string;
   collectionAddress: string;
   payerKeyPath: string;
+  metadataBaseUrl: string;
   dataDir: string;
   season: { id: number; name: string; startsAt: number };
   appVersion: string;
@@ -21,6 +22,7 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
     treeAddress: env.BUBBLEGUM_TREE ?? '',
     collectionAddress: env.NFT_COLLECTION ?? '',
     payerKeyPath: env.PAYER_KEYPAIR_PATH ?? '',
+    metadataBaseUrl: (env.METADATA_BASE_URL ?? 'https://api.piegeddon.game').replace(/\/$/, ''),
     dataDir: env.PIEGEDDON_DATA ?? new URL('../data/', import.meta.url).pathname,
     season: {
       id: Number(env.SEASON_ID ?? 1),

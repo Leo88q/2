@@ -5,7 +5,8 @@ import type { Config } from './config.js';
 import type { Store } from './store.js';
 import { matchReportSchema, processMatch } from './match.js';
 import { createReferralCode, redeemReferral, ensureProfile } from './referrals.js';
-import { mintReward } from './mint.js';
+import { mintReward, mintConfigFrom } from './mint.js';
+import { rewardMetadata, collectionMetadata } from './metadata.js';
 import { RoomHub } from './rooms.js';
 
 const profileSchema = z.object({
@@ -16,6 +17,17 @@ const profileSchema = z.object({
 
 export function buildRoutes(store: Store, cfg: Config, hub: RoomHub): Router {
   const r = Router();
+
+  // Метаданные cNFT (стандарт Metaplex JSON) — публичный URI для минта.
+  r.get('/api/metadata/collection', (_req, res) => {
+    res.json(collectionMetadata(cfg));
+  });
+
+  r.get('/api/metadata/:rewardId', (req, res) => {
+    const reward = store.state.rewards.find((x) => x.id === req.params.rewardId);
+    if (!reward) return res.status(404).json({ error: 'not_found' });
+    res.json(rewardMetadata(reward, cfg));
+  });
 
   r.get('/api/health', (_req, res) => {
     res.json({ ok: true, version: cfg.appVersion, mintMode: cfg.mintMode });
@@ -73,7 +85,7 @@ export function buildRoutes(store: Store, cfg: Config, hub: RoomHub): Router {
     const pending = store.pendingRewards(playerId);
     const results = [];
     for (const reward of pending) {
-      const minted = await mintReward(reward, wallet, cfg);
+      const minted = await mintReward(reward, wallet, mintConfigFrom(cfg));
       if (minted.ok) {
         store.markMinted(reward.id, minted.signature);
         results.push({ rewardId: reward.id, title: reward.title, ok: true, signature: minted.signature });

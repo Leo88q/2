@@ -5,7 +5,9 @@
   "license": "Apache-2.0",
   "private": true,
   "type": "module",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "start": "node dist/src/index.js",
@@ -13,6 +15,10 @@
     "test": "npm run build && node --test dist/test/*.test.js"
   },
   "dependencies": {
+    "@metaplex-foundation/mpl-bubblegum": "^6.0.0",
+    "@metaplex-foundation/mpl-token-metadata": "^3.4.0",
+    "@metaplex-foundation/umi": "^1.6.0",
+    "@metaplex-foundation/umi-bundle-defaults": "^1.6.0",
     "express": "^4.21.2",
     "ws": "^8.18.0",
     "zod": "^3.24.1"

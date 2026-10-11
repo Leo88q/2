@@ -22,7 +22,7 @@ app:
     - media/screenshot_arena.png
     - media/screenshot_controller.png
   license_url: https://github.com/Leo88q/2/blob/arena/04a6e8e8-2/LICENSE
-  privacy_policy_url: https://piegeddon.game/privacy
+  privacy_policy_url: https://piegeddon.game/privacy.html
   category: games
   localized: {}
 release:
