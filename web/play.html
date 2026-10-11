@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Пирогеддон — Пульт</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="phone-page">
+  <div id="joinScreen" class="panel">
+    <h1>ПИРОГЕДДОН</h1>
+    <p class="tagline">Телефон — твой пирогомёт</p>
+    <label>Код с ТВ
+      <input id="roomInput" maxlength="4" placeholder="ABCD" autocapitalize="characters" spellcheck="false">
+    </label>
+    <label>Имя (до 12 символов)
+      <input id="nameInput" maxlength="12" placeholder="Красти">
+    </label>
+    <div class="faction-grid" id="factionGrid"></div>
+    <button id="btnJoin" class="btn btn-big">ВОЙТИ В ШОУ</button>
+    <p id="joinError" class="error"></p>
+    <p class="ref-note" id="refNote"></p>
+  </div>
+
+  <div id="padScreen" class="pad hidden">
+    <div class="pad-hud">
+      <span id="padName">—</span>
+      <span id="padHp">♥♥♥</span>
+      <span id="padTimer">1:30</span>
+    </div>
+    <div class="charge-wrap"><div id="chargeBar" class="charge-bar"></div></div>
+    <div class="pad-aim">
+      <button class="pad-btn small" id="aimUp">▲</button>
+      <div class="aim-label">ПРИЦЕЛ</div>
+      <button class="pad-btn small" id="aimDown">▼</button>
+    </div>
+    <div class="pad-main">
+      <button class="pad-btn move" id="moveLeft">◀</button>
+      <button class="pad-btn throw" id="btnThrow">🥧<br>БРОСОК</button>
+      <button class="pad-btn move" id="moveRight">▶</button>
+    </div>
+    <button class="pad-btn block" id="btnBlock">🛡 БЛОК</button>
+    <div class="pad-tip">Удерживай БРОСОК для зарядки — отпусти, чтобы кинуть пирог</div>
+  </div>
+
+  <script src="/js/net.js"></script>
+  <script src="/js/controller.js"></script>
+</body>
+</html>

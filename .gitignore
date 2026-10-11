@@ -1,0 +1,28 @@
+# Зависимости и сборки
+node_modules/
+backend/dist/
+backend/data/
+.env
+*.log
+
+# Ключи подписи Android (секреты!)
+*.keystore
+*.jks
+*.pepk
+
+# Бинарные ассеты upstream и субмодули (см. scripts/setup_game.sh)
+third_party/pienoon/assets/
+third_party/pienoon/rawassets/
+third_party/pienoon/dependencies/
+third_party/pienoon/.git/
+
+# Собранные WebView-ассеты Android-оболочки
+android/app/src/main/assets/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+
+
+# Системное
+.DS_Store

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2026 Piegeddon Contributors. Licensed under the Apache License, Version 2.0. -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Mobile Wallet Adapter: обнаружение кошельков (Phantom, Solflare, Backpack). -->
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data android:scheme="solana-wallet" />
+        </intent>
+        <intent>
+            <action android:name="com.solana.mobilewallet.v1.SOLANA_WALLET_REQUEST" />
+        </intent>
+        <package android:name="app.phantom" />
+    </queries>
+
+    <application
+        android:label="Piegeddon"
+        android:icon="@drawable/ic_launcher"
+        android:banner="@drawable/ic_launcher"
+        android:usesCleartextTraffic="false"
+        android:allowBackup="false"
+        android:isGame="true"
+        android:theme="@style/Theme.Piegeddon">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="sensorLandscape"
+            android:configChanges="orientation|keyboardHidden|screenSize">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

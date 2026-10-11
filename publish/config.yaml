@@ -1,0 +1,34 @@
+# Конфиг издателя Solana dApp Store для Piegeddon.
+# Используется Portal (publish.solanamobile.com) или CLI @solana-mobile/dapp-store-cli.
+# Схема: https://github.com/solana-mobile/dapp-publishing
+packageName: game.piegeddon.app
+displayName: Piegeddon
+publisher:
+  name: Piegeddon Contributors
+  website: https://piegeddon.game
+  email: publish@piegeddon.game
+  support_email: support@piegeddon.game
+app:
+  name: Piegeddon
+  short_description: Вечериночная аркада: картонные герои, пироги и NFT-награды
+  long_description: >
+    Пирогеддон (Piegeddon) — многопользовательская вечериночная аркада.
+    Бросайтесь пирогами в 2–4 игроков (телефоны как пульты, ТВ как арена),
+    побеждайте в матчах сезона и забирайте бесплатные NFT-скины.
+    Вход бесплатный, кошелёк подключается только за наградой.
+  icon: media/icon.png
+  featureGraphic: media/feature.png
+  screenshots:
+    - media/screenshot_arena.png
+    - media/screenshot_controller.png
+  license_url: https://github.com/Leo88q/2/blob/arena/04a6e8e8-2/LICENSE
+  privacy_policy_url: https://piegeddon.game/privacy
+  category: games
+  localized: {}
+release:
+  name: 1.0.0
+  description: Сезон 1: Первый Ломоть
+  android_package: game.piegeddon.app
+  android_version_code: 1
+  android_min_sdk: 26
+  release_notes: Первый релиз: арена 2-4 игроков, multi-screen, cNFT-награды.

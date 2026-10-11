@@ -1,0 +1,56 @@
+# Публикация Piegeddon в Solana dApp Store (вручную, workflow_dispatch).
+# Секреты репозитория:
+#   PIEGEDDON_KEYSTORE_BASE64  — base64 от piegeddon.keystore
+#   PIEGEDDON_KEYSTORE_PASSWORD / PIEGEDDON_KEY_PASSWORD / PIEGEDDON_KEY_ALIAS
+#   DAPP_STORE_KEYPAIR_BASE64  — base64 от publisher keypair json
+#   DAPP_STORE_API_KEY         — Portal -> Settings -> API keys
+name: Publish dApp Store
+
+on:
+  workflow_dispatch:
+    inputs:
+      release_notes:
+        description: 'Release notes'
+        required: true
+        default: 'Сезон 1: Первый Ломоть'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Decode signing keystore
+        run: |
+          echo "${{ secrets.PIEGEDDON_KEYSTORE_BASE64 }}" | base64 -d > /tmp/piegeddon.keystore
+          echo "PIEGEDDON_KEYSTORE=/tmp/piegeddon.keystore" >> $GITHUB_ENV
+          echo "PIEGEDDON_KEYSTORE_PASSWORD=${{ secrets.PIEGEDDON_KEYSTORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "PIEGEDDON_KEY_ALIAS=${{ secrets.PIEGEDDON_KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "PIEGEDDON_KEY_PASSWORD=${{ secrets.PIEGEDDON_KEY_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Build signed release APK
+        run: |
+          ./scripts/sync_web_assets.sh
+          cd android
+          gradle assembleRelease --stacktrace
+          cp app/build/outputs/apk/release/app-release.apk /tmp/piegeddon-release.apk
+
+      - name: Submit to dApp Store
+        env:
+          DAPP_STORE_API_KEY: ${{ secrets.DAPP_STORE_API_KEY }}
+        run: |
+          echo "${{ secrets.DAPP_STORE_KEYPAIR_BASE64 }}" | base64 -d > /tmp/publisher.json
+          export DAPP_STORE_KEYPAIR=/tmp/publisher.json
+          ./scripts/publish.sh /tmp/piegeddon-release.apk "${{ inputs.release_notes }}"

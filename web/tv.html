@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Пирогеддон — Арена (ТВ)</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="tv-page">
+  <div id="stage">
+    <canvas id="arena" width="1280" height="720"></canvas>
+
+    <div id="lobby" class="panel">
+      <h1>ПИРОГЕДДОН</h1>
+      <p class="tagline">Арена шоу · Сезон 1: Первый Ломоть</p>
+      <div class="room-box">
+        <div class="room-label">Код комнаты для пультов</div>
+        <div id="roomCode" class="room-code">····</div>
+        <div class="room-hint">Откройте <b>/play</b> на телефонах и введите код</div>
+      </div>
+      <div id="lobbyPlayers" class="lobby-players"></div>
+      <button id="btnStart" class="btn btn-big">▶ НАЧАТЬ ШОУ</button>
+      <p class="keys">Клавиатура: <b>WASD</b> движение · <b>W/S</b> прицел · <b>F</b> (удерживать) бросок · <b>G</b> блок</p>
+    </div>
+
+    <div id="rewardPanel" class="panel hidden">
+      <h1>🏆 <span id="winnerName">ПОБЕДА!</span></h1>
+      <p class="tagline">Ты победил! Забери свой первый бесплатный NFT-скин для пирога</p>
+      <div id="rewardList" class="reward-list"></div>
+      <div class="claim-row">
+        <input id="walletInput" placeholder="Solana-кошелёк (base58) или демо-режим" spellcheck="false">
+        <button id="btnDemoWallet" class="btn">Демо-кошелёк</button>
+        <button id="btnClaim" class="btn btn-big">Забрать NFT</button>
+      </div>
+      <div id="claimResult" class="claim-result"></div>
+      <button id="btnRematch" class="btn">Ещё матч</button>
+    </div>
+
+    <div id="hud" class="hud"></div>
+    <div class="live-badge">● LIVE</div>
+    <div class="credits-chip" title="Credits">Based on Pie Noon by Google · Apache 2.0</div>
+  </div>
+
+  <script src="/js/net.js"></script>
+  <script src="/js/game.js"></script>
+  <script src="/js/tv.js"></script>
+</body>
+</html>

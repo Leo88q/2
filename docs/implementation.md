@@ -162,3 +162,20 @@ Apache 2.0 разрешает коммерческое использовани�
 - [3](https://docs.solanamobile.com/solana-mobile-stack/dapp-store) — Solana Mobile Docs: dApp Store (APK, Publisher NFT)
 - [4](https://hackmd.io/@manbankat/HJGk-mT2-x) — Build & Publish Your First Solana Mobile dApp (keystore, ~0.2 SOL, KYC)
 - [5](https://deepwiki.com/solana-mobile/dapp-publishing) — solana-mobile/dapp-publishing (CLI `@solana-mobile/dapp-store-cli`)
+
+---
+
+## 9. Статус реализации (обновлено)
+
+Реализовано и проверено:
+
+- **Веб-игра** (`web/`): лендинг с лором, ТВ-арена (canvas-движок: броски, зарядка,
+  блок, ИИ, раунды, эффекты), пульт-контроллер, multi-screen через WebSocket-комнаты.
+- **Backend** (`backend/`): движок наград (первая победа, серии, «Заказ Пекарни»,
+  «Ломоть недели»), анти-чит и идемпотентность матчей, реферальные коды,
+  mock/solana минт cNFT (Bubblegum), лидерборд сезона — 24 автотеста.
+- **Android-оболочка** (`android/`): WebView + MWA-мост `window.PiegeddonWallet`.
+- **Публикация**: `publish/config.yaml`, keystore/publish-скрипты, CI-workflows.
+- **Лицензии**: `LICENSE`, `NOTICE`, ребрендинг форка, `docs/LICENSE-COMPLIANCE.md`.
+
+Продакт-ранбук: [DEPLOY.md](./DEPLOY.md).

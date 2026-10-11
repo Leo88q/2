@@ -1,0 +1,47 @@
+# Native core bring-up: форк google/pienoon (трек 2).
+# Не блокирует релиз продукта (WebView-оболочка + веб-игра),
+# но проверяет, что дерево форка собирается.
+name: Native core
+
+on:
+  workflow_dispatch:
+    inputs:
+      with_assets:
+        description: 'Скачать rawassets/assets из upstream'
+        type: boolean
+        default: true
+
+jobs:
+  setup-and-build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup game tree (clone upstream + rebrand)
+        run: ./scripts/setup_game.sh ${{ inputs.with_assets && '--with-assets' || '' }}
+
+      - name: Check rebrand markers
+        run: |
+          grep -q 'game.piegeddon.native' third_party/pienoon/AndroidManifest.xml
+          grep -q 'Piegeddon' third_party/pienoon/res/values/strings.xml
+          ! grep -q 'com.google.intent.category.CARDBOARD' third_party/pienoon/AndroidManifest.xml
+          echo "Rebrand OK"
+
+      - name: Setup JDK + Android SDK/NDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Fetch dependency submodules
+        run: |
+          cd third_party/pienoon
+          git submodule update --init --recursive || echo "::warning::Часть субмодулей недоступна (старые зеркала) — см. docs/DEPLOY.md"
+
+      - name: Attempt native build (bring-up)
+        run: |
+          echo "::notice::Полная сборка native-ядра — веха «Месяц 5+» роадмапа."
+          echo "::notice::См. docs/DEPLOY.md, раздел «Native core bring-up»."
+          # Точка расширения: cmake + NDK-сборка будет включена после
+          # миграции тулчейна (см. docs/implementation.md, риски).
+          ls third_party/pienoon
