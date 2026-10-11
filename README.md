@@ -12,9 +12,11 @@
 | Компонент | Состояние |
 |---|---|
 | Веб-игра (лендинг + ТВ-арена + пульт, multi-screen по WS) | ✅ играбельно |
-| Backend (матчи, награды, рефералы, комнаты, cNFT-минт) | ✅ 24 теста, mock-минт; solana-режим включается env-флагом |
+| Backend (матчи, награды, рефералы, комнаты, cNFT-минт) | ✅ 25 тестов; реальный Bubblegum-минт + метаданные Metaplex |
 | Android-оболочка (WebView + Mobile Wallet Adapter) | ✅ исходники + CI-сборка APK |
-| Публикация dApp Store (config.yaml, keystore, CLI/CI workflow) | ✅ runbook: [docs/DEPLOY.md](docs/DEPLOY.md) |
+| Публикация dApp Store (config.yaml, keystore PKCS#12, CLI/CI workflow) | ✅ runbook: [docs/DEPLOY.md](docs/DEPLOY.md) |
+| Создание дерева/коллекции cNFT | ✅ `backend/scripts/create_tree.mjs` |
+| Privacy Policy / ToS (нужны для App NFT) | ✅ `/privacy.html`, `/terms.html` |
 | Форк ядра Pie Noon (ребрендинг, лицензии) | ✅ код в `third_party/pienoon`; native bring-up — веха «Месяц 5+» |
 
 ## Быстрый старт
