@@ -38,15 +38,28 @@ cd piegeddon
 
 ```bash
 cd backend
-npm install
+npm ci
 ```
+
+> ⚠️ Используй именно **`npm ci`** (а не `npm install`): `npm install`
+> переписывает `package-lock.json` локально и блокирует следующий `git pull`.
+> Если pull всё же отказался с ошибкой про package-lock.json:
+> `git checkout -- backend/package-lock.json && git pull`
 
 ## 3. Собрать и запустить
 
 ```bash
-npm run build
 npm start
 ```
+
+**Или одной командой из корня репозитория (рекомендуется):**
+
+```bash
+./start.sh
+```
+
+`./start.sh` сам делает `git pull`, откатывает шум в package-lock.json,
+ставит зависимости через `npm ci` и запускает сервер.
 
 > `npm start` теперь сам собирает проект перед запуском (prestart),
 > но явный `npm run build` — надёжная привычка после обновлений.
