@@ -41,11 +41,15 @@ cd backend
 npm install
 ```
 
-## 3. Запустить
+## 3. Собрать и запустить
 
 ```bash
+npm run build
 npm start
 ```
+
+> `npm start` теперь сам собирает проект перед запуском (prestart),
+> но явный `npm run build` — надёжная привычка после обновлений.
 
 Увидишь:
 
