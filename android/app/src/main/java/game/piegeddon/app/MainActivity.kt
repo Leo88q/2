@@ -12,7 +12,7 @@ import game.piegeddon.app.web3.PiegeddonBridge
 import game.piegeddon.app.web3.WalletManager
 
 /**
- * Оболочка Piegeddon: WebView с веб-игрой (лендинг, арена, пульт)
+ * Оболочка Piegeddon: WebView с мобильной игрой (меню, арена, награды)
  * + нативный Web3-мост (Mobile Wallet Adapter).
  *
  * Атрибуция: игровое ядро основано на Pie Noon by Google (Apache 2.0),

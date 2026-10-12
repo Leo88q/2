@@ -1,7 +1,7 @@
 # ПИРОГЕДДОН / PIEGEDDON
 
-**Многопользовательская вечериночная аркада** о картонных героях, которые бросаются пирогами —
-с наградами в виде cNFT на Solana. Платформа: Solana dApp Store (Seeker) и Android (телефоны, ТВ).
+**Мобильная вечериночная аркада** о картонных героях, которые бросаются пирогами —
+с наградами в виде cNFT на Solana. Платформа: Solana dApp Store (Seeker), Android.
 Сессия — 2–5 минут. Вход бесплатный, кошелёк подключается только за наградой.
 
 > Игровое ядро основано на `google/pienoon` (Apache 2.0). Атрибуция: `NOTICE`.
@@ -11,8 +11,8 @@
 
 | Компонент | Состояние |
 |---|---|
-| Веб-игра (лендинг + ТВ-арена + пульт, multi-screen по WS) | ✅ играбельно |
-| Backend (матчи, награды, рефералы, комнаты, cNFT-минт) | ✅ 25 тестов; реальный Bubblegum-минт + метаданные Metaplex |
+| Мобильная игра (меню, арена 1×ИИ, тач-управление, сгенерированный арт) | ✅ играбельно |
+| Backend (матчи, награды, рефералы, cNFT-минт) | ✅ 24 теста; реальный Bubblegum-минт + метаданные Metaplex |
 | Android-оболочка (WebView + Mobile Wallet Adapter) | ✅ исходники + CI-сборка APK |
 | Публикация dApp Store (config.yaml, keystore PKCS#12, CLI/CI workflow) | ✅ runbook: [docs/DEPLOY.md](docs/DEPLOY.md) |
 | Создание дерева/коллекции cNFT | ✅ `backend/scripts/create_tree.mjs` |
@@ -23,13 +23,13 @@
 
 ```bash
 cd backend && npm install && npm test && npm start
-# http://localhost:8080 — лендинг, /tv.html — арена, /play.html — пульт
+# http://localhost:8080 — игра (меню → арена → награды)
 ```
 
 ## Структура
 
 ```
-web/                  игра: лендинг, арена (ТВ), контроллер (телефон)
+web/                  мобильная игра: меню, арена, награды
 backend/              API + WebSocket-комнаты + движок наград + минт cNFT
 android/              Android-оболочка (game.piegeddon.app) + MWA-мост
 publish/              метаданные Solana dApp Store (config.yaml, media)

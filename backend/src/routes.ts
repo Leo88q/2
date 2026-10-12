@@ -7,7 +7,6 @@ import { matchReportSchema, processMatch } from './match.js';
 import { createReferralCode, redeemReferral, ensureProfile } from './referrals.js';
 import { mintReward, mintConfigFrom } from './mint.js';
 import { rewardMetadata, collectionMetadata } from './metadata.js';
-import { RoomHub } from './rooms.js';
 
 const profileSchema = z.object({
   id: z.string().min(4).max(64),
@@ -15,7 +14,7 @@ const profileSchema = z.object({
   faction: z.enum(['crust', 'custard', 'cherry', 'meringue']),
 });
 
-export function buildRoutes(store: Store, cfg: Config, hub: RoomHub): Router {
+export function buildRoutes(store: Store, cfg: Config): Router {
   const r = Router();
 
   // Метаданные cNFT (стандарт Metaplex JSON) — публичный URI для минта.
@@ -133,18 +132,6 @@ export function buildRoutes(store: Store, cfg: Config, hub: RoomHub): Router {
         seasonPoints: p.seasonPoints,
       })),
     });
-  });
-
-  // --- комнаты для multi-screen --------------------------------------------
-  r.post('/api/rooms', (_req, res) => {
-    const room = hub.create();
-    res.json({ code: room.code });
-  });
-
-  r.get('/api/rooms/:code', (req, res) => {
-    const room = hub.get(req.params.code);
-    if (!room) return res.status(404).json({ error: 'not_found' });
-    res.json({ code: room.code, players: hub.controllers(room).length, tvConnected: hub.hasTv(room) });
   });
 
   return r;

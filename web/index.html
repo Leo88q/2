@@ -2,81 +2,139 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ПИРОГЕДДОН — вечериночная аркада на Solana</title>
-  <meta name="description" content="Пирогеддон (Piegeddon) — многопользовательская вечериночная аркада: картонные герои, пироги, телешоу-арена и бесплатные NFT-награды на Solana.">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#2a1608">
+  <title>ПИРОГЕДДОН — мобильная аркада</title>
+  <meta name="description" content="Пирогеддон (Piegeddon) — мобильная вечериночная аркада: картонные герои, пироги и бесплатные NFT-награды на Solana.">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
-  <header class="hero">
-    <h1>ПИРОГЕДДОН <span class="ru">· PIEGEDDON</span></h1>
-    <p class="tagline">
-      Вечериночная аркада о картонных героях, которые решают судьбу мира пирогами.
-      Сессии по 2–5 минут. Вход бесплатный. Победа — бесплатный NFT-скин.
-    </p>
-    <div class="hero-cta">
-      <a class="btn btn-big" href="/tv.html">▶ ИГРАТЬ НА ТВ</a>
-      <a class="btn" href="/play.html">📱 ТЕЛЕФОН = ПУЛЬТ</a>
-      <a class="btn btn-ghost" href="#nft">🏆 ЗАБРАТЬ NFT</a>
-    </div>
-  </header>
+  <div id="app">
 
-  <main class="wrap">
-    <section class="lore">
-      <h2 class="section-title">История Картонии</h2>
-      <div class="era"><b>Серый Лист.</b> Картония была плоской и серой — забытой настольной игрой на чердаке. Её жители — немые картонные вырезки — ждали, когда их оживят.</div>
-      <div class="era"><b>Великое Взбивание.</b> С неба упала сливочная комета «Миксер». Мир проснулся, стал цветным, а из кратера поднялся Золотой Пирог — рецепты которого оживляют материю.</div>
-      <div class="era"><b>Краш-Войны и Пирогеддон.</b> Четыре фракции бились за Пирог, пока он не сорвался в Воронку Крошек. Мир спасся в последний миг — и раскололся на Двенадцать Ломтей.</div>
-      <div class="era"><b>Кондитерский Пакт.</b> Теперь споры решает телешоу «Пирогеддон»: смотри арену, побеждай, забирай Ломтья Золотого Пирога. Ты — новичок, только что вырезанный из картона.</div>
-    </section>
+    <!-- ГЛАВНОЕ МЕНЮ -->
+    <section id="screen-menu" class="screen active">
+      <div class="menu-hero">
+        <div class="logo-block">
+          <div class="logo-kicker">ВЕЧЕРИНОЧНАЯ АРКАДА · СЕЗОН 1</div>
+          <h1 class="logo">ПИРОГЕДДОН</h1>
+          <div class="logo-sub">бросай пироги · побеждай · забирай NFT</div>
+        </div>
 
-    <section>
-      <h2 class="section-title">Фракции арены</h2>
-      <div class="faction-grid-landing">
-        <div class="faction-tile"><div class="fe">🛡</div><h3>Красты</h3><p>Рыцари корки. Блокируют щитом и держат удар.</p></div>
-        <div class="faction-tile custard"><div class="fe">🍮</div><h3>Заварки</h3><p>Мастера заряженного броска. Чем дольше держишь — тем злее пирог.</p></div>
-        <div class="faction-tile cherry"><div class="fe">🍒</div><h3>Вишенки</h3><p>Скорость и двойной бросок. Не поймать.</p></div>
-        <div class="faction-tile meringue"><div class="fe">☁️</div><h3>Меренги</h3><p>Снайперы безе. Бьют с другой стороны арены.</p></div>
+        <div class="menu-actions">
+          <button id="btnPlay" class="btn btn-play">▶ ИГРАТЬ</button>
+          <button id="btnAbout" class="btn btn-ghost">Об игре</button>
+        </div>
+
+        <div class="menu-card">
+          <div class="menu-card-title">Выбери героя</div>
+          <div id="factionPicker" class="faction-grid"></div>
+        </div>
+
+        <div class="menu-card">
+          <div class="menu-card-title">Рейтинг сезона «Первый Ломоть»</div>
+          <div id="leaderboard" class="leaderboard">
+            <div class="lb-row lb-empty">Пока пусто — стань первым!</div>
+          </div>
+        </div>
+
+        <div class="menu-footer">
+          NFT-награды бесплатны · кошелёк не нужен, чтобы играть
+        </div>
       </div>
     </section>
 
-    <section>
-      <h2 class="section-title">Как играть</h2>
-      <div class="steps">
-        <div class="step"><div class="n">1</div><b>ТВ + телефоны</b><br>Запусти арену на ТВ, друзья входят с телефонов по коду комнаты.</div>
-        <div class="step"><div class="n">2</div><b>Пирогомёт</b><br>Двигайся, целись, заряжай бросок и блокируй чужие пироги.</div>
-        <div class="step"><div class="n">3</div><b>Последний стоит</b><br>Раунды по 90 секунд, матч до 2 побед. 2–4 игрока + ИИ.</div>
-        <div class="step"><div class="n">4</div><b>Награды</b><br>Победа, серии и квесты дают cNFT-скины. Бесплатно.</div>
+    <!-- ИГРА -->
+    <section id="screen-game" class="screen">
+      <div class="game-wrap">
+        <div class="game-topbar">
+          <button id="btnBackToMenu2" class="icon-btn">✕</button>
+          <div class="topbar-center">
+            <div id="hudRound" class="topbar-round">Раунд 1</div>
+            <div id="hudTimer" class="topbar-timer">1:30</div>
+          </div>
+          <div class="topbar-spacer"></div>
+        </div>
+        <div id="hudPlayers" class="hud-players"></div>
+
+        <canvas id="arena" width="1280" height="720"></canvas>
+
+        <div class="touch-pad">
+          <div class="pad-left">
+            <button id="btnLeft" class="pad-btn move">◀</button>
+            <button id="btnRight" class="pad-btn move">▶</button>
+          </div>
+          <div class="pad-right">
+            <div class="pad-aim">
+              <button id="btnAimUp" class="pad-btn small">▲</button>
+              <button id="btnAimDown" class="pad-btn small">▼</button>
+            </div>
+            <button id="btnThrow" class="pad-btn throw">🥧<span>БРОСОК</span></button>
+            <button id="btnBlock" class="pad-btn block">🛡</button>
+          </div>
+        </div>
+        <div class="pad-tip">Держи БРОСОК для зарядки — отпусти, чтобы кинуть пирог</div>
       </div>
     </section>
 
-    <section id="nft">
-      <h2 class="section-title">NFT без боли</h2>
-      <p style="font-size:18px;line-height:1.65;max-width:820px">
-        Кошелёк не нужен, чтобы играть. Он подключается только когда ты забираешь награду —
-        и комиссию за минт платим мы. Награды — сжатые NFT (Metaplex Bubblegum): скины,
-        рецепты редких пирогов, эффекты попаданий и Ломтья Золотого Пирога для чемпионов сезона.
-      </p>
-      <div class="hero-cta" style="justify-content:flex-start;margin-top:16px">
-        <a class="btn" href="/tv.html">Сыграть и забрать первый скин</a>
+    <!-- НАГРАДЫ -->
+    <section id="screen-reward" class="screen">
+      <div class="reward-wrap">
+        <img id="rewardArt" class="reward-art" src="/img/char_crust.png" alt="">
+        <h2 id="rewardTitle" class="reward-title">Победа!</h2>
+        <p class="reward-tagline">Забери свой бесплатный NFT-скин для пирога</p>
+
+        <div id="rewardList" class="reward-list"></div>
+
+        <div class="claim-box">
+          <input id="walletInput" placeholder="Solana-кошелёк (base58)" spellcheck="false" autocapitalize="off">
+          <div class="claim-buttons">
+            <button id="btnDemoWallet" class="btn btn-ghost">Демо-кошелёк</button>
+            <button id="btnClaim" class="btn btn-play">Забрать NFT</button>
+          </div>
+          <div id="claimResult" class="claim-result"></div>
+        </div>
+
+        <div class="reward-actions">
+          <button id="btnRematch" class="btn btn-play">Ещё матч</button>
+          <button id="btnToMenu" class="btn btn-ghost">В меню</button>
+        </div>
       </div>
     </section>
 
-    <section>
-      <h2 class="section-title">Об игре и лицензии</h2>
-      <div class="credits">
-        <b>Piegeddon / Пирогеддон</b> — оригинальный продукт Piegeddon Contributors, Apache License 2.0.<br>
-        Игровое ядро основано на открытом проекте <b>Pie Noon by Google</b>
-        (<a href="https://github.com/google/pienoon">github.com/google/pienoon</a>), Apache License 2.0.
-        Проект не аффилирован с Google и не одобрен Google; товарные знаки Google не используются
-        в названии и продвижении. Полная информация: <code>NOTICE</code> и <code>docs/LICENSE-COMPLIANCE.md</code> в репозитории.
+    <!-- ОБ ИГРЕ -->
+    <section id="screen-about" class="screen">
+      <div class="about-wrap">
+        <h2>Об игре</h2>
+        <p>
+          <b>Пирогеддон / Piegeddon</b> — мобильная вечериночная аркада.
+          Картонные герои Картонии бросаются пирогами, а победители забирают
+          Ломтья Золотого Пирога. Вход бесплатный: кошелёк подключается только
+          когда ты забираешь NFT-награду, а комиссию платим мы.
+        </p>
+        <h3>Управление</h3>
+        <p>
+          ◀ ▶ — движение · ▲ ▼ — прицел · 🥧 БРОСОК (держи для зарядки) · 🛡 — блок.
+          Победа в раунде — выбить всех; матч идёт до 2 побед.
+        </p>
+        <h3>История</h3>
+        <p>
+          Картонный мир чуть не погиб в Пирогеддоне — последней битве за Золотой Пирог.
+          Теперь споры решает арена, а ты — новичок, только что вырезанный из картона.
+        </p>
+        <div class="credits">
+          <b>Piegeddon</b> — © Piegeddon Contributors, Apache License 2.0.<br>
+          Игровое ядро основано на открытом проекте <b>Pie Noon by Google</b>
+          (<a href="https://github.com/google/pienoon">github.com/google/pienoon</a>), Apache License 2.0.
+          Проект не аффилирован с Google и не одобрен Google.<br>
+          <a href="/privacy.html">Политика конфиденциальности</a> · <a href="/terms.html">Условия использования</a>
+        </div>
+        <button id="btnBackFromAbout" class="btn btn-play">← Назад</button>
       </div>
     </section>
-  </main>
 
-  <footer class="footer">
-    © 2026 Piegeddon Contributors · Сезон 1: Первый Ломоть · Сделано для Solana dApp Store<br>
-    <a href="/privacy.html">Политика конфиденциальности</a> · <a href="/terms.html">Условия использования</a>
-  </footer>
+  </div>
+
+  <script src="/js/game.js"></script>
+  <script src="/js/app.js"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@
 
 | Путь | Что это | Статус |
 |---|---|---|
-| `web/` | Игра: лендинг, ТВ-арена, пульт-контроллер | ✅ прод |
+| `web/` | Мобильная игра: меню, арена, награды | ✅ прод |
 | `backend/` | API: матчи, награды, cNFT-минт, рефералы, комнаты WS | ✅ прод (mock-минт) |
 | `android/` | Android-оболочка (WebView + Mobile Wallet Adapter) | ✅ готов к сборке в CI |
 | `publish/` | Метаданные dApp Store (config.yaml, media) | ✅ |
@@ -23,7 +23,7 @@
 
 ```bash
 cd backend && npm install && npm test && npm start
-# http://localhost:8080  ->  лендинг;  /tv.html  ->  арена;  /play.html  ->  пульт
+# http://localhost:8080  ->  игра (меню → арена → награды)
 ```
 
 Тесты: `npm test` (24 теста: награды, анти-чит, рефералы, API, идемпотентность).
@@ -152,9 +152,9 @@ publisher keypair, `DAPP_STORE_API_KEY`).
 - [x] Keystore создан (`scripts/generate_keystore.sh`, PKCS#12)
 - [x] Privacy Policy и ToS как страницы (`/privacy.html`, `/terms.html`)
 - [x] Bubblegum-дерево и коллекция создаются одной командой (`backend/scripts/create_tree.mjs`)
-- [ ] APK подписан release-ключом, установлен на телефон и ТВ
+- [ ] APK подписан release-ключом, установлен на телефоне
 - [ ] Матч → победа → claim → cNFT приходит на кошелёк (devnet, потом mainnet)
-- [ ] Реферальная ссылка `/join/CODE` работает с телефона
+- [ ] Реферальная ссылка `/join/CODE` работает
 - [ ] NOTICE/LICENSE внутри APK (scripts/sync_web_assets.sh копирует)
 - [ ] Экран «Об игре» показывает атрибуцию Pie Noon / Google
 - [ ] Privacy Policy опубликована

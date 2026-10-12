@@ -119,18 +119,6 @@ test('рефералка через API', async () => {
   assert.equal(res.status, 200);
 });
 
-test('комнаты: создание и проверка', async () => {
-  let res = await fetch(`${base}/api/rooms`, { method: 'POST' });
-  const { code } = (await res.json()) as { code: string };
-  assert.match(code, /^[A-HJ-NP-Z2-9]{4}$/);
-
-  res = await fetch(`${base}/api/rooms/${code}`);
-  assert.equal(res.status, 200);
-
-  res = await fetch(`${base}/api/rooms/ZZZZ`);
-  assert.equal(res.status, 404);
-});
-
 test('метаданные cNFT: collection и reward', async () => {
   let res = await fetch(`${base}/api/metadata/collection`);
   assert.equal(res.status, 200);

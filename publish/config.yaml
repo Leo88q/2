@@ -10,12 +10,12 @@ publisher:
   support_email: support@piegeddon.game
 app:
   name: Piegeddon
-  short_description: Вечериночная аркада: картонные герои, пироги и NFT-награды
+  short_description: Мобильная аркада: картонные герои, пироги и NFT-награды
   long_description: >
-    Пирогеддон (Piegeddon) — многопользовательская вечериночная аркада.
-    Бросайтесь пирогами в 2–4 игроков (телефоны как пульты, ТВ как арена),
-    побеждайте в матчах сезона и забирайте бесплатные NFT-скины.
-    Вход бесплатный, кошелёк подключается только за наградой.
+    Пирогеддон (Piegeddon) — мобильная вечериночная аркада.
+    Бросай пироги картонным героям, побеждай в матчах сезона
+    и забирай бесплатные NFT-скины. Вход бесплатный, кошелёк
+    подключается только за наградой.
   icon: media/icon.png
   featureGraphic: media/feature.png
   screenshots:
@@ -31,4 +31,4 @@ release:
   android_package: game.piegeddon.app
   android_version_code: 1
   android_min_sdk: 26
-  release_notes: Первый релиз: арена 2-4 игроков, multi-screen, cNFT-награды.
+  release_notes: Первый релиз: мобильная арена против ИИ, сезоны, cNFT-награды.
