@@ -20,6 +20,7 @@
     "@metaplex-foundation/mpl-token-metadata": "^3.4.0",
     "@metaplex-foundation/umi": "^1.6.0",
     "@metaplex-foundation/umi-bundle-defaults": "^1.6.0",
+    "@solana/web3.js": "^1.99.0",
     "express": "^4.21.2",
     "ws": "^8.18.0",
     "zod": "^3.24.1"
